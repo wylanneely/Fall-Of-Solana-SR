@@ -1,0 +1,27 @@
+{
+  "name": "fossr-anchor",
+  "version": "0.1.0",
+  "description": "FOSSR Anchor Program",
+  "scripts": {
+    "test": "anchor test",
+    "build": "anchor build",
+    "deploy:devnet": "anchor deploy --provider.cluster devnet",
+    "deploy:mainnet": "anchor deploy --provider.cluster mainnet"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "0.32.1",
+    "@solana/spl-token": "^0.1.8",
+    "@solana/web3.js": "^1.87.6",
+    "bn.js": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^25.1.0",
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
