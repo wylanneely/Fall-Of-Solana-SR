@@ -236,3 +236,4 @@ This is experimental software. Use at your own risk. Always do your own research
 ---
 
 Built with ❤️ for the Solana community
+# 5-tier locks deployed
