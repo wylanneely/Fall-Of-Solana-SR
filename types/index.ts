@@ -53,10 +53,10 @@ export interface LockTier {
 }
 
 export const LOCK_TIERS: LockTier[] = [
-  { maxSolAmount: 0.1, minLockMinutes: 5, maxLockHours: 5 },
-  { maxSolAmount: 0.5, minLockMinutes: 4, maxLockHours: 4 },
-  { maxSolAmount: 1.0, minLockMinutes: 3, maxLockHours: 3 },
-  { maxSolAmount: 10.0, minLockMinutes: 1, maxLockHours: 1 },
+  { maxSolAmount: 0.01, minLockMinutes: 10, maxLockHours: 1.67 }, // 10min - 100min = 1.67 hours
+  { maxSolAmount: 0.1, minLockMinutes: 9, maxLockHours: 1.5 },   // 9min - 90min = 1.5 hours
+  { maxSolAmount: 1.0, minLockMinutes: 8, maxLockHours: 1.33 },  // 8min - 80min = 1.33 hours
+  { maxSolAmount: 10.0, minLockMinutes: 7, maxLockHours: 1.17 }, // 7min - 70min = 1.17 hours
 ]
 
 export const TOKEN_CONFIG = {

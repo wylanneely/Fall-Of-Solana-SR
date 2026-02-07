@@ -29,10 +29,10 @@ export const LEVELS: Level[] = [
     emoji: '🐟',
     pointsRequired: 0,
     lockTiers: {
-      tier1: '5m - 5h',
-      tier2: '4m - 4h',
-      tier3: '3m - 3h',
-      tier4: '1m - 1h',
+      tier1: '10m - 100m',
+      tier2: '9m - 90m',
+      tier3: '8m - 80m',
+      tier4: '7m - 70m',
     },
   },
   {
@@ -41,10 +41,10 @@ export const LEVELS: Level[] = [
     emoji: '🦈',
     pointsRequired: 50_000,
     lockTiers: {
-      tier1: '5m - 4.5h',
-      tier2: '4m - 3.6h',
-      tier3: '3m - 2.7h',
-      tier4: '1m - 54m',
+      tier1: '6m - 60m',
+      tier2: '5m - 50m',
+      tier3: '4m - 40m',
+      tier4: '3m - 30m',
     },
   },
   {
@@ -53,10 +53,10 @@ export const LEVELS: Level[] = [
     emoji: '🐋',
     pointsRequired: 500_000,
     lockTiers: {
-      tier1: '50s - 50m',
-      tier2: '40s - 40m',
-      tier3: '30s - 30m',
-      tier4: '10s - 10m',
+      tier1: '2m - 20m',
+      tier2: '1m - 10m',
+      tier3: '50s - 5m',
+      tier4: '40s - 4m',
     },
   },
   {
@@ -65,10 +65,22 @@ export const LEVELS: Level[] = [
     emoji: '🔥',
     pointsRequired: 2_500_000,
     lockTiers: {
-      tier1: '50s - 5m',
-      tier2: '40s - 4m',
-      tier3: '30s - 3m',
-      tier4: '10s - 1m',
+      tier1: '30s - 3m',
+      tier2: '20s - 2m',
+      tier3: '10s - 1m',
+      tier4: '5s - 30s',
+    },
+  },
+  {
+    id: 5,
+    name: 'Unchained Titan',
+    emoji: '⚡',
+    pointsRequired: 10_000_000,
+    lockTiers: {
+      tier1: 'instant',
+      tier2: 'instant',
+      tier3: 'instant',
+      tier4: 'instant',
     },
   },
 ]
@@ -116,8 +128,8 @@ export function formatPoints(points: number): string {
 }
 
 export function getLockTierForAmount(level: Level, solAmount: number): string {
-  if (solAmount < 0.1) return level.lockTiers.tier1
-  if (solAmount < 0.5) return level.lockTiers.tier2
-  if (solAmount < 1.0) return level.lockTiers.tier3
+  if (solAmount <= 0.01) return level.lockTiers.tier1
+  if (solAmount <= 0.1) return level.lockTiers.tier2
+  if (solAmount <= 1.0) return level.lockTiers.tier3
   return level.lockTiers.tier4
 }

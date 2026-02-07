@@ -17,20 +17,55 @@ pub const PRICE_INCREMENT: u64 = 1;
 pub const PRICE_DECREMENT: u64 = 1;
 pub const MIN_PRICE: u64 = 100;               // Minimum price floor
 
-/// Lock tier durations (in seconds)
-pub const TIER1_MIN: i64 = 5 * 60;            // 5 minutes
-pub const TIER1_MAX: i64 = 5 * 60 * 60;       // 5 hours
-pub const TIER2_MIN: i64 = 4 * 60;            // 4 minutes  
-pub const TIER2_MAX: i64 = 4 * 60 * 60;       // 4 hours
-pub const TIER3_MIN: i64 = 3 * 60;            // 3 minutes
-pub const TIER3_MAX: i64 = 3 * 60 * 60;       // 3 hours
-pub const TIER4_MIN: i64 = 1 * 60;            // 1 minute
-pub const TIER4_MAX: i64 = 1 * 60 * 60;       // 1 hour
+/// Lock tier durations by level and SOL amount (in seconds)
+/// Level 1 (lowest): longest locks
+pub const LVL1_SOL1_MIN: i64 = 10 * 60;      // 10 minutes for 0.01 SOL
+pub const LVL1_SOL1_MAX: i64 = 100 * 60;     // 100 minutes for 0.01 SOL
+pub const LVL1_SOL2_MIN: i64 = 9 * 60;       // 9 minutes for 0.1 SOL
+pub const LVL1_SOL2_MAX: i64 = 90 * 60;      // 90 minutes for 0.1 SOL
+pub const LVL1_SOL3_MIN: i64 = 8 * 60;       // 8 minutes for 1.0 SOL
+pub const LVL1_SOL3_MAX: i64 = 80 * 60;      // 80 minutes for 1.0 SOL
+pub const LVL1_SOL4_MIN: i64 = 7 * 60;       // 7 minutes for 10.0 SOL
+pub const LVL1_SOL4_MAX: i64 = 70 * 60;      // 70 minutes for 10.0 SOL
+
+/// Level 2
+pub const LVL2_SOL1_MIN: i64 = 6 * 60;       // 6 minutes
+pub const LVL2_SOL1_MAX: i64 = 60 * 60;      // 60 minutes
+pub const LVL2_SOL2_MIN: i64 = 5 * 60;       // 5 minutes
+pub const LVL2_SOL2_MAX: i64 = 50 * 60;      // 50 minutes
+pub const LVL2_SOL3_MIN: i64 = 4 * 60;       // 4 minutes
+pub const LVL2_SOL3_MAX: i64 = 40 * 60;      // 40 minutes
+pub const LVL2_SOL4_MIN: i64 = 3 * 60;       // 3 minutes
+pub const LVL2_SOL4_MAX: i64 = 30 * 60;      // 30 minutes
+
+/// Level 3
+pub const LVL3_SOL1_MIN: i64 = 2 * 60;       // 2 minutes
+pub const LVL3_SOL1_MAX: i64 = 20 * 60;      // 20 minutes
+pub const LVL3_SOL2_MIN: i64 = 1 * 60;       // 1 minute
+pub const LVL3_SOL2_MAX: i64 = 10 * 60;      // 10 minutes
+pub const LVL3_SOL3_MIN: i64 = 50;           // 50 seconds
+pub const LVL3_SOL3_MAX: i64 = 5 * 60;       // 5 minutes
+pub const LVL3_SOL4_MIN: i64 = 40;           // 40 seconds
+pub const LVL3_SOL4_MAX: i64 = 4 * 60;       // 4 minutes
+
+/// Level 4
+pub const LVL4_SOL1_MIN: i64 = 30;           // 30 seconds
+pub const LVL4_SOL1_MAX: i64 = 3 * 60;       // 3 minutes
+pub const LVL4_SOL2_MIN: i64 = 20;           // 20 seconds
+pub const LVL4_SOL2_MAX: i64 = 2 * 60;       // 2 minutes
+pub const LVL4_SOL3_MIN: i64 = 10;           // 10 seconds
+pub const LVL4_SOL3_MAX: i64 = 1 * 60;       // 1 minute
+pub const LVL4_SOL4_MIN: i64 = 5;            // 5 seconds
+pub const LVL4_SOL4_MAX: i64 = 30;           // 30 seconds
+
+/// Level 5: instant unlock
+pub const LVL5_LOCK_DURATION: i64 = 0;
 
 /// SOL amount thresholds (in lamports)
-pub const TIER1_THRESHOLD: u64 = 100_000_000;       // 0.1 SOL
-pub const TIER2_THRESHOLD: u64 = 500_000_000;       // 0.5 SOL
-pub const TIER3_THRESHOLD: u64 = 1_000_000_000;     // 1.0 SOL
+pub const SOL1_THRESHOLD: u64 = 10_000_000;        // 0.01 SOL
+pub const SOL2_THRESHOLD: u64 = 100_000_000;       // 0.1 SOL
+pub const SOL3_THRESHOLD: u64 = 1_000_000_000;     // 1.0 SOL
+pub const SOL4_THRESHOLD: u64 = 10_000_000_000;    // 10.0 SOL
 
 /// Min/max buy amounts
 pub const MIN_BUY_AMOUNT: u64 = 10_000_000;         // 0.01 SOL
@@ -158,10 +193,14 @@ pub mod fossr {
             .ok_or(ErrorCode::ArithmeticOverflow)?
             .checked_sub(raffle_fee_amount)
             .ok_or(ErrorCode::ArithmeticOverflow)?;
-        
-        // Calculate lock duration
+
+        // Calculate user level based on current token balance (before minting)
+        let current_balance = ctx.accounts.buyer_token_account.amount / 1_000_000_000; // Convert from base units (9 decimals)
+        let user_level = calculate_user_level(current_balance);
+
+        // Calculate lock duration based on level and SOL amount
         let slot_hashes_data = ctx.accounts.slot_hashes.data.borrow();
-        let lock_duration = calculate_lock_duration(sol_amount, clock.unix_timestamp, clock.slot, &slot_hashes_data)?;
+        let lock_duration = calculate_lock_duration(user_level, sol_amount, clock.unix_timestamp, clock.slot, &slot_hashes_data)?;
         let unlock_time = clock.unix_timestamp + lock_duration;
         
         // Transfer SOL to program vault
@@ -408,28 +447,69 @@ fn calculate_next_airdrop_time(current_time: i64) -> i64 {
     }
 }
 
-fn calculate_lock_duration(sol_amount: u64, timestamp: i64, slot: u64, slot_hashes_data: &[u8]) -> Result<i64> {
-    let (min, max) = if sol_amount < TIER1_THRESHOLD {
-        (TIER1_MIN, TIER1_MAX)
-    } else if sol_amount < TIER2_THRESHOLD {
-        (TIER2_MIN, TIER2_MAX)
-    } else if sol_amount < TIER3_THRESHOLD {
-        (TIER3_MIN, TIER3_MAX)
+fn calculate_lock_duration(level: u8, sol_amount: u64, timestamp: i64, slot: u64, slot_hashes_data: &[u8]) -> Result<i64> {
+    // Level 5: instant unlock
+    if level >= 5 {
+        return Ok(LVL5_LOCK_DURATION);
+    }
+
+    // Determine SOL tier
+    let sol_tier = if sol_amount < SOL1_THRESHOLD {
+        1
+    } else if sol_amount < SOL2_THRESHOLD {
+        2
+    } else if sol_amount < SOL3_THRESHOLD {
+        3
     } else {
-        (TIER4_MIN, TIER4_MAX)
+        4
     };
-    
+
+    // Get min/max for this level and SOL tier
+    let (min, max) = match (level, sol_tier) {
+        (1, 1) => (LVL1_SOL1_MIN, LVL1_SOL1_MAX),
+        (1, 2) => (LVL1_SOL2_MIN, LVL1_SOL2_MAX),
+        (1, 3) => (LVL1_SOL3_MIN, LVL1_SOL3_MAX),
+        (1, 4) => (LVL1_SOL4_MIN, LVL1_SOL4_MAX),
+        (2, 1) => (LVL2_SOL1_MIN, LVL2_SOL1_MAX),
+        (2, 2) => (LVL2_SOL2_MIN, LVL2_SOL2_MAX),
+        (2, 3) => (LVL2_SOL3_MIN, LVL2_SOL3_MAX),
+        (2, 4) => (LVL2_SOL4_MIN, LVL2_SOL4_MAX),
+        (3, 1) => (LVL3_SOL1_MIN, LVL3_SOL1_MAX),
+        (3, 2) => (LVL3_SOL2_MIN, LVL3_SOL2_MAX),
+        (3, 3) => (LVL3_SOL3_MIN, LVL3_SOL3_MAX),
+        (3, 4) => (LVL3_SOL4_MIN, LVL3_SOL4_MAX),
+        (4, 1) => (LVL4_SOL1_MIN, LVL4_SOL1_MAX),
+        (4, 2) => (LVL4_SOL2_MIN, LVL4_SOL2_MAX),
+        (4, 3) => (LVL4_SOL3_MIN, LVL4_SOL3_MAX),
+        (4, 4) => (LVL4_SOL4_MIN, LVL4_SOL4_MAX),
+        _ => (LVL1_SOL1_MIN, LVL1_SOL1_MAX), // fallback to level 1 tier 1
+    };
+
     let range = max - min;
     let hash_seed = if slot_hashes_data.len() >= 8 {
         u64::from_le_bytes(slot_hashes_data[0..8].try_into().unwrap())
     } else {
         timestamp as u64
     };
-    
+
     let combined = hash_seed.wrapping_add(timestamp as u64).wrapping_add(slot);
     let offset = (combined % (range as u64)) as i64;
-    
+
     Ok(min + offset)
+}
+
+fn calculate_user_level(token_balance: u64) -> u8 {
+    if token_balance >= 10_000_000 {
+        5
+    } else if token_balance >= 2_500_000 {
+        4
+    } else if token_balance >= 500_000 {
+        3
+    } else if token_balance >= 50_000 {
+        2
+    } else {
+        1
+    }
 }
 
 // ============= ACCOUNTS =============

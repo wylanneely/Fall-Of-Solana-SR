@@ -29,10 +29,10 @@ export default function LevelBenefitsPreview({ userLevel, solAmount = 0.1 }: Lev
               <strong>Current Lock Times Preview:</strong>
             </p>
             <ul className="space-y-1 ml-4">
-              <li>• &lt; 0.1 SOL: <span className="text-fossr-accent">{currentLevel.lockTiers.tier1}</span></li>
-              <li>• &lt; 0.5 SOL: <span className="text-fossr-accent">{currentLevel.lockTiers.tier2}</span></li>
-              <li>• &lt; 1.0 SOL: <span className="text-fossr-accent">{currentLevel.lockTiers.tier3}</span></li>
-              <li>• ≤ 10.0 SOL: <span className="text-fossr-accent">{currentLevel.lockTiers.tier4}</span></li>
+              <li>• ≤ 0.01 SOL: <span className="text-fossr-accent">{currentLevel.lockTiers.tier1}</span></li>
+              <li>• ≤ 0.1 SOL: <span className="text-fossr-accent">{currentLevel.lockTiers.tier2}</span></li>
+              <li>• ≤ 1.0 SOL: <span className="text-fossr-accent">{currentLevel.lockTiers.tier3}</span></li>
+              <li>• > 1.0 SOL: <span className="text-fossr-accent">{currentLevel.lockTiers.tier4}</span></li>
             </ul>
           </div>
 

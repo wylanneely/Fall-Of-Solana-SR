@@ -119,12 +119,11 @@ export function isValidSolanaAddress(address: string): boolean {
 }
 
 /**
- * Get lock tier info for display
+ * Get lock tier info for display (generic fallback)
  */
 export function getLockTierInfo(solAmount: number): string {
-  if (solAmount < 0.1) return '5m - 5h'
-  if (solAmount < 0.5) return '4m - 4h'
-  if (solAmount < 1.0) return '3m - 3h'
-  if (solAmount <= 10.0) return '1m - 1h'
-  return '1m - 1h'
+  if (solAmount <= 0.01) return '10m - 100m'
+  if (solAmount <= 0.1) return '9m - 90m'
+  if (solAmount <= 1.0) return '8m - 80m'
+  return '7m - 70m'
 }
