@@ -1,4 +1,5 @@
 [toolchain]
+anchor_version = "0.30.1"
 
 [features]
 resolution = true
@@ -17,7 +18,7 @@ fossr = "93KPeH4wk9VQGrcAhabXn4EcnaGbTo5JxkwMB2We8Meo"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "https://devnet.helius-rpc.com/?api-key=e8cb713e-06f4-48e3-9248-2feb452aff7d"
+cluster = "https://api.devnet.solana.com"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
