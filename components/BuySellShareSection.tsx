@@ -176,7 +176,7 @@ export default function BuySellShareSection({
         <div>
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-300 mb-3">Quick Buy</label>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 w-full overflow-x-auto pb-2">
               {quickBuyAmounts.map((amount) => (
                 <button
                   key={amount}
