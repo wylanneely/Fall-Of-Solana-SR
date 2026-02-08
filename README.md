@@ -1,23 +1,85 @@
 # $FOSSR - Fall of Solana Strategic Reserve
 
-A gamified, deflationary Solana token dApp with anti-dump mechanics and timed airdrops.
+The gamified, rug-resistant Solana token with **5-Tier Randomized Lock System** that rewards long-term holders.
 
-## Features
+## 🎯 Core Features
 
-- **Deflationary Tokenomics**: 0.069% burn on every transaction
-- **Tiered Protective Locks**: Lock duration based on purchase size to reward DCA strategy
-- **Timed Raffle Airdrops**: Every 4m20s during bonding, then adjusts based on phase
-- **Share-to-Earn**: Share tokens to receive 2x raffle tickets
-- **100% Fair Launch**: 0% team allocation, full transparency
+### **5-Tier Randomized Lock System** (Your Signature Mechanic)
+- **Level 1** (0 tokens): 10m-100m locks for 0.01 SOL purchases (longest locks)
+- **Level 5** (10M+ tokens): **Instant unlocks** for all purchases
+- **Randomization**: Lock duration randomized within tier ranges for unpredictability
+- **SOL Tiers**: 0.01, 0.1, 1, 10 SOL purchases get different lock ranges per level
 
-## Tech Stack
+**Why it works**: Encourages DCA buying, rewards long-term holding, prevents rug pulls.
 
+### **Deflationary Tokenomics**
+- **0.069% burn** on every buy transaction
+- **0.621% raffle fee** accumulates into airdrop pot
+- **Total 0.69% tax** - fair and transparent
+
+### **Timed Airdrop Raffles**
+- **Every 5 minutes** during bonding phase
+- **One winner per cycle** gets the accumulated pot
+- **Level 2+ holders eligible** (10K+ tokens)
+- **Share-to-earn**: 2x raffle tickets for sharing
+
+### **100% Fair Launch**
+- **0% team allocation**
+- **No presale**
+- **Full transparency** - all code open source
+
+## 🛡️ Anti-Rug Mechanics
+- **Tiered locks** prevent large dump opportunities
+- **Randomized durations** make timing attacks impossible
+- **Burn on every transaction** reduces supply over time
+- **On-chain verifiable** - everything transparent
+
+## 🚀 Tech Stack
 - **Next.js 14** with App Router
-- **Solana Web3.js** & SPL Token libraries
-- **Wallet Adapter** (Phantom, Solflare, Torus)
-- **Tailwind CSS** for styling
+- **Solana Web3.js** & SPL Token
+- **Wallet Adapter** (Phantom, Solflare, etc.)
+- **Tailwind CSS** for responsive design
 - **TypeScript** for type safety
-- **React Hot Toast** for notifications
+- **Anchor Framework** for smart contracts
+
+## 📊 Tokenomics
+- **Total Supply**: 1,000,000,000 $FOSSR
+- **Buy Tax**: 0.69% (0.069% burn + 0.621% raffle)
+- **Sell Tax**: 0.1% burn
+- **Airdrop Pot**: Accumulates from raffle fees
+
+## 🎮 User Experience
+- **Dashboard**: Real-time balance, level progress, raffle countdown
+- **Level Badges**: Visual progression with unlock benefits
+- **Purchase Orders**: Track all buys with lock timers
+- **Responsive**: Works on mobile and desktop
+
+## 🔧 Development
+- **Smart Contracts**: Anchor Rust program with bonding curve
+- **Frontend**: React/Next.js with Solana wallet integration
+- **Testing**: Devnet deployed, ready for community testing
+
+## 🌐 Live Demo
+[Preview with 5-Tier Locks](https://fossr-dashboard-git-staging-5tier-locks-wylans-projects-6335ab2e.vercel.app)
+
+## 📝 Getting Started
+1. Clone repo: `git clone https://github.com/wylanneely/Fall-Of-Solana-SR.git`
+2. Install: `npm install`
+3. Devnet: `npm run dev`
+4. Build: `npm run build`
+
+## 🚀 Deployment
+- **Vercel**: Auto-deploys on git push
+- **Mainnet**: Ready for production launch
+- **Devnet**: Testing environment live
+
+## 🤝 Community
+- **Telegram**: t.me/fossr
+- **X/Twitter**: @ColdsideCrypto
+- **Instagram**: @DonWylan
+
+## 📄 License
+MIT License - Open source and community-driven.
 
 ## Getting Started
 

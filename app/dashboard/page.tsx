@@ -17,6 +17,7 @@ import BuySellShareSection from '@/components/BuySellShareSection'
 import PurchaseOrdersTable from '@/components/PurchaseOrdersTable'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import LevelBadge from '@/components/LevelBadge'
+import AirdropWinModal from '@/components/AirdropWinModal'
 
 export default function DashboardPage() {
   // SSR protection - only render wallet-dependent content on client
