@@ -5,13 +5,13 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-fossr = "93KPeH4wk9VQGrcAhabXn4EcnaGbTo5JxkwMB2We8Meo"
+fossr = "5WCXWwsaw8WRxMzxqBiAQ5ByHWY9ruV9egijtgC493SP"
 
 [programs.devnet]
-fossr = "93KPeH4wk9VQGrcAhabXn4EcnaGbTo5JxkwMB2We8Meo"
+fossr = "5WCXWwsaw8WRxMzxqBiAQ5ByHWY9ruV9egijtgC493SP"
 
 [programs.mainnet]
-fossr = "93KPeH4wk9VQGrcAhabXn4EcnaGbTo5JxkwMB2We8Meo"
+fossr = "5WCXWwsaw8WRxMzxqBiAQ5ByHWY9ruV9egijtgC493SP"
 
 [registry]
 url = "https://api.apr.dev"
