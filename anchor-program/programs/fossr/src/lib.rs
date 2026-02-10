@@ -3,7 +3,7 @@ use anchor_spl::token::{self, Mint, Token, TokenAccount};
 use anchor_spl::associated_token::AssociatedToken;
 
 // Must match the deployed program id (Anchor enforces this at runtime)
-declare_id!("93KPeH4wk9VQGrcAhabXn4EcnaGbTo5JxkwMB2We8Meo");
+declare_id!("5WCXWwsaw8WRxMzxqBiAQ5ByHWY9ruV9egijtgC493SP");
 
 /// Fee constants (simplified - no raffle)
 pub const BURN_FEE_BPS: u16 = 69;             // 0.069% burn on buys
