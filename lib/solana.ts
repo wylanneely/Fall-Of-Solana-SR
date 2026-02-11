@@ -17,8 +17,8 @@ export class FossrService {
     
     // Default to System Program (11111111111111111111111111111111) - a valid Solana address
     // Replace with your actual deployed program IDs in production
-    this.programId = new PublicKey(process.env.NEXT_PUBLIC_FOSSR_PROGRAM_ID || '11111111111111111111111111111111')
-    this.tokenMint = new PublicKey(process.env.NEXT_PUBLIC_FOSSR_TOKEN_MINT || '11111111111111111111111111111111')
+    this.programId = new PublicKey(process.env.NEXT_PUBLIC_FOSSR_PROGRAM_ID || '5WCXWwsaw8WRxMzxqBiAQ5ByHWY9ruV9egijtgC493SP')
+    this.tokenMint = new PublicKey(process.env.NEXT_PUBLIC_FOSSR_TOKEN_MINT || '5F5yX96VoaGmqmZvrA5FqgsyraZGchMSfni1ddCcJaR3')
   }
 
   private isOnChainConfigured(): boolean {
@@ -502,19 +502,24 @@ export class FossrService {
       // Calculate user tickets (number of purchases in current period)
       let userTickets = 0
       if (walletAddress) {
-        const orders = await this.getUserPurchaseOrders(walletAddress.toString())
-        // Filter by current raffle period
-        const currentPeriodOrders = orders.filter(o => 
-          o.timestamp >= globalState.periodStart && o.timestamp < globalState.periodEnd && !o.isAirdropWin
-        )
-        userTickets = currentPeriodOrders.length
-        
-        // Check for share bonus (stored in localStorage for demo)
-        const shareBonus = localStorage.getItem(`fossr_share_${walletAddress.toString()}`)
-        const shareBonusTime = shareBonus ? parseInt(shareBonus) : 0
-        // Only apply bonus if share was in current period
-        if (shareBonusTime >= globalState.periodStart && shareBonusTime < globalState.periodEnd) {
-          userTickets *= TOKEN_CONFIG.shareBonus
+        const balance = await this.getUserBalance(walletAddress)
+        if (balance.unlockedTokens < 10000) {
+          userTickets = 0 // Ineligible until 10k FOSSR held (unlocked)
+        } else {
+          const orders = await this.getUserPurchaseOrders(walletAddress.toString())
+          // Filter by current raffle period
+          const currentPeriodOrders = orders.filter(o => 
+            o.timestamp >= globalState.periodStart && o.timestamp < globalState.periodEnd && !o.isAirdropWin
+          )
+          userTickets = currentPeriodOrders.length
+          
+          // Check for share bonus (stored in localStorage for demo)
+          const shareBonus = localStorage.getItem(`fossr_share_${walletAddress.toString()}`)
+          const shareBonusTime = shareBonus ? parseInt(shareBonus) : 0
+          // Only apply bonus if share was in current period
+          if (shareBonusTime >= globalState.periodStart && shareBonusTime < globalState.periodEnd) {
+            userTickets *= TOKEN_CONFIG.shareBonus
+          }
         }
       }
       

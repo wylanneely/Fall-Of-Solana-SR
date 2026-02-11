@@ -1,19 +1,24 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import { PublicKey, Keypair, SystemProgram } from "@solana/web3.js";
+import { PublicKey, SystemProgram, Connection, Keypair } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import * as fs from "fs";
 import * as path from "path";
 
 // EXISTING TOKEN MINT - already created
-const EXISTING_TOKEN_MINT = "JCmJCCCegW6QSX6kUVzkjuiCmtRQEf8Vo2Xm8j24jpoP";
+const EXISTING_TOKEN_MINT = "5F5yX96VoaGmqmZvrA5FqgsyraZGchMSfni1ddCcJaR3";
 
 async function main() {
   // Configure the client
-  const provider = anchor.AnchorProvider.env();
+  const connection = new Connection('https://api.devnet.solana.com', 'confirmed');
+const walletPath = process.env.ANCHOR_WALLET || '~/.config/solana/id.json';
+const secretKey = Uint8Array.from(JSON.parse(fs.readFileSync(walletPath.replace('~', process.env.HOME), 'utf8')));
+const keypair = Keypair.fromSecretKey(secretKey);
+const walletKeypair = new anchor.Wallet(keypair);
+const provider = new anchor.AnchorProvider(connection, walletKeypair);
   anchor.setProvider(provider);
 
-  const wallet = provider.wallet as anchor.Wallet & { payer: Keypair };
+  const wallet = provider.wallet as anchor.Wallet;
 
   // Load IDL from target (requires `anchor build` to have run)
   const idlPath = path.resolve(__dirname, "..", "target", "idl", "fossr.json");
@@ -39,7 +44,10 @@ async function main() {
 
   // Anchor 0.32+ Program constructor no longer takes programId; it uses idl.address.
   // Ensure the IDL address matches the deployed program id.
+  // Note: For Anchor 0.30+, IDL has 'address' field
+if (idl.address) {
   idl.address = programId.toString();
+}
   const program = new Program(idl, provider);
 
   console.log("🚀 Starting FOSSR initialization...");
